@@ -1,8 +1,8 @@
 # A stack is a Last in, first out data structure
 class Stack
   attr_accessor :items, :limit
-  def initialize(item, limit=100)
-    @items = [item]
+  def initialize(limit=100)
+    @items = []
     @limit = limit
   end
 

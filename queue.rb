@@ -1,8 +1,8 @@
 # queue a First-In-First-Out (FIFO) data structure
 class Queue
   attr_accessor :items
-  def initialize(item)
-    @items = [item]
+  def initialize()
+    @items = []
   end
 
   def add(item)

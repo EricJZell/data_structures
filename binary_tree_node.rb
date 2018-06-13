@@ -1,6 +1,7 @@
 require 'pry'
 require_relative 'queue'
 require_relative 'stack'
+
 class Node
   attr_accessor :value, :left_child, :right_child
   def initialize(value)
@@ -19,56 +20,68 @@ class Node
       [true, false].sample ? @left_child.insert(new_value) : @right_child.insert(new_value)
     end
   end
-
 end
 
-def inorder_traversal(node)
-  if node
-    inorder_traversal(node.left_child)
-    puts node.value
-    inorder_traversal(node.right_child)
+class Iterator
+  attr_accessor :queue
+  def initialize(node)
+    @queue = Queue.new
+    inorder_traversal(node) { |node| @queue.add(node) }
+  end
+
+  def next
+    node = @queue.remove
+    node.value
   end
 end
 
-def preorder_traversal(node)
+def inorder_traversal(node, &block)
   if node
-    puts node.value
+    inorder_traversal(node.left_child, &block)
+    yield node
+    inorder_traversal(node.right_child, &block)
+  end
+end
+
+def preorder_traversal(node, &block)
+  if node
+    yield node
     preorder_traversal(node.left_child)
     preorder_traversal(node.right_child)
   end
 end
 
-def postorder_traversal(node)
+def postorder_traversal(node, &block)
   if node
     postorder_traversal(node.left_child)
     postorder_traversal(node.right_child)
-    puts node.value
+    yield node
   end
 end
 
-def depth_first_search(node)
+def depth_first_search(node, &block)
   if node
-    puts node.value
+    yield node
     depth_first_search(node.left_child)
     depth_first_search(node.right_child)
   end
 end
 
-def depth_first_iterative(node)
-  stack = Stack.new(node)
+def depth_first_iterative(node, &block)
+  stack = Stack.new.push(node)
   while !stack.is_empty?
     node = stack.pop
-    puts node.value
+    yield node
     stack.push(node.right_child) if node.right_child
     stack.push(node.left_child) if node.left_child
   end
 end
 
-def breadth_first_search(node)
-  queue = Queue.new(node)
+def breadth_first_search(node, &block)
+  queue = Queue.new.add(node)
   while !queue.is_empty?
     node = queue.remove
-    puts node.value
+    yield node
     queue.add(node.left_child) if node.left_child
     queue.add(node.right_child) if node.right_child
   end
