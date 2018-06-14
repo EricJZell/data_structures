@@ -22,6 +22,24 @@ class Node
   end
 end
 
+class BSTNode < Node
+  def insert(new_value)
+    if new_value < @value
+      if left_child.nil?
+        @left_child = BSTNode.new(new_value)
+      else
+        @left_child.insert(new_value)
+      end
+    else
+      if right_child.nil?
+        @right_child = BSTNode.new(new_value)
+      else
+        @right_child.insert(new_value)
+      end
+    end
+  end
+end
+
 class Iterator
   attr_accessor :queue
   def initialize(node)
@@ -35,11 +53,27 @@ class Iterator
   end
 end
 
+
+def sorted_array_to_bst(array, start, last)
+  return if start > last
+  mid = (start + last) / 2
+  node = BSTNode.new(array[mid])
+  node.left_child = sorted_array_to_bst(array, start, mid - 1)
+  node.right_child = sorted_array_to_bst(array, mid + 1, last)
+  node
+end
+
+def balance_bst(node)
+  array = []
+  inorder_traversal(node){ |node| array.push(node.value) }
+  node = insert_midpoint(nil, array)
+end
+
 def inorder_traversal(node, &block)
   if node
-    inorder_traversal(node.left_child, &block)
+    inorder_traversal(node.left_child, array)
     yield node
-    inorder_traversal(node.right_child, &block)
+    inorder_traversal(node.right_child, array)
   end
 end
 
