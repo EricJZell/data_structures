@@ -1,15 +1,16 @@
-to_sort = []
-30.times do
-  to_sort << (rand(26) + 97).chr
-end
+require 'pry'
+# bubble sort is a O(n^2) sort algorithm. Its best case CAN be O(n))
+# It can me executed completely in place for space complexity of O(1)
+array = []
+n = 50
+n.times { array.push(rand(50)) }
 
-puts "To be sorted: " + to_sort.join(', ')
 
 def bubble_sort(array)
   sorted = false
   while !sorted
     sorted = true
-    for i in (0..array.size-2) do
+    for i in (0..array.length - 2)
       if array[i] > array[i + 1]
         sorted = false
         tmp = array[i]
@@ -18,7 +19,7 @@ def bubble_sort(array)
       end
     end
   end
-  array
 end
 
-puts "Sorted: " + bubble_sort(to_sort).join(', ')
+bubble_sort(array)
+puts array.to_s
