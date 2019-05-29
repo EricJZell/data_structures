@@ -1,11 +1,18 @@
 require 'pry'
 # Recursion using memoization
-def fib(n)
-  @memo ||= {}
-  return n if n <= 1
-  left = @memo[n - 1] || fib(n - 1)
-  right = @memo[n - 2] || fib(n - 2)
-  @memo[n] = left + right
+class Fibonacci
+  def initialize
+    @memo = {}
+  end
+  def calculate(n)
+    @memo[n] ||= begin
+      if n <= 1
+        n
+      else
+        calculate(n - 1) + calculate(n - 2)
+      end
+    end
+  end
 end
 
 # This and memoized have O(n)
